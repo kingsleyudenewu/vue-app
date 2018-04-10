@@ -57,9 +57,13 @@
         </div>
         <!-- End row -->
 
-        <div class="row log">
+        <div class="row log" v-if="turns.length > 0">
             <div class="columns">
                 <ul>
+                    <li v-for="turn in turns">
+                        {{ turn.text }}
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- End Row -->

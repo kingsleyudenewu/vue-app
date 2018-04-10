@@ -4,16 +4,23 @@ new Vue({
     data: {
         playerHealth: 100,
         monsterHealth: 100,
-        gameIsRunning: false
+        gameIsRunning: false,
+        turns: []
     },
     methods: {
         startGame: function(){
             this.gameIsRunning = true;
             this.playerHealth = 100;
             this.monsterHealth = 100;
+            this.turns = [];
         },
         attack: function(){
-            this.monsterHealth -= this.calculateDamage(3, 10);
+            var damage = this.calculateDamage(3, 10);
+            this.monsterHealth -= damage;
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hit monster  for ' + damage
+            });
             this.monstaerAttacks();            
             
         },
@@ -22,13 +29,23 @@ new Vue({
             this.monstaerAttacks(); 
         },
         heal: function(){
-
+            if(this.playerHealth <= 90){
+                this.playerHealth += 10;
+            }
+            else this.playerHealth = 100;            
+            this.monstaerAttacks();
         },
         giveUp: function(){
-
+            this.gameIsRunning = false;
+            // this.startGame();
         },
         monstaerAttacks: function(){
-            this.playerHealth -= this.calculateDamage(5, 12);
+            var damage = this.calculateDamage(5, 12);
+            this.playerHealth -= damage;
+            this.turns.unshift({
+                isPlayer: false,
+                text: 'Monster hit player  for ' + damage
+            });            
             this.checkWin();
         },
         calculateDamage: function(min, max){
@@ -41,6 +58,7 @@ new Vue({
                 }
                 else{
                     this.gameIsRunning = false;
+                    // this.turns = [];
                 }                 
                 return true;
             }
@@ -50,6 +68,7 @@ new Vue({
                 }
                 else{
                     this.gameIsRunning = false;
+                    // this.turns = [];
                 }
                 return true;
             }
